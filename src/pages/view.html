@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{{ app_init_js }}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Word Search</title>
+<style type="text/css">
+    body {
+        padding: 8px;
+        height: 100%;
+    }
+
+    #wordsearch table td {
+        width: 28px;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #wordsearch {
+        float: left;
+        border: 1px solid #aaa;
+        cursor: pointer;
+    }
+
+    #wordlist {
+        padding: 16px;
+        float: left;
+    }
+
+    #wordlist ul {
+        list-style: none;
+        font-size: 14px;
+    }
+
+    #wordlist ul li {
+        font-weight: bold;
+    }
+
+    #wordlist ul li.found {
+        font-weight: normal;
+        text-decoration: line-through;
+        color: #8b8;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div id="browser-warning" class="hide">
+        <div class="text-center">
+        <h3>Warning: Browser Not Supported</h3>
+        </div>
+        <p>As you are using an outdated or unsupported browser this activity may not work as intended.</p>
+        <p>Download an up to date browser: <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a>, <a href="https://www.mozilla.org/firefox/" target="_blank">Mozilla Firefox</a>, or <a href="https://www.apple.com/safari/" target="_blank">Apple Safari</a>.</p>
+    </div>
+
+    <div>
+        <div id="wordsearch"></div>
+    </div>
+    <div id="wordlist"></div>
+
+    <script type="text/javascript" src="wordsearch.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var words = [
+            "donkey",
+            "elephant",
+            "monkey",
+            "cheetah",
+            "ocelot",
+            "alligator",
+            "crocodile",
+            "mouse",
+            "frog",
+            "dingo",
+            "echidna",
+            "koala",
+            "racoon",
+            "badger",
+            "snake",
+            "lizard",
+            "tiger",
+            "gazelle",
+            "hyena",
+            "shark",
+            "whale",
+            "dolphin",
+            "kookaburra",
+            "aardvark",
+            "zebra"
+        ];
+
+        var wordlist;
+        buildBoard(words, function(board, usedWords, leftOvers) {
+            if (leftOvers.length > 0 ) {
+                alert(leftOvers);
+            }
+
+            drawBoard(board, $('#wordsearch'), function(foundWord) {
+                $('#wordlist ul').find('li').each(function(i, elt) {
+                    if ($(elt).text() === foundWord) {
+                        $(elt).fadeOut(function() {
+                            $(this).addClass('found').fadeIn();
+                        });
+                    }
+                });
+            });
+
+            $list = $('<ul>');
+            $.each(usedWords, function(i, word) {
+                $list.append($('<li>').text(word));
+            });
+
+            $('#wordlist').empty().append($list);
+        });
+    });
+    </script>
+</body>
+</html>

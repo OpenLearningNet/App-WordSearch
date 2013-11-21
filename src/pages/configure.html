@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{{ app_init_js }}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Configure Columns</title>
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<style type="text/css">
+    body {
+        padding: 8px;
+        height: 100%;
+    }
+
+    .rotate45 {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .rotate135 {
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+        transform: rotate(135deg);
+    }
+
+    .arrow-label {
+        display: inline-block !important;
+        width: 32px;
+        text-align: center;
+    }
+
+
+
+    #wordsearch table td {
+        width: 28px;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #wordsearch {
+        float: left;
+        border: 1px solid #aaa;
+        cursor: pointer;
+    }
+
+    #wordlist {
+        padding: 16px;
+        float: left;
+    }
+
+    #wordlist ul {
+        list-style: none;
+        font-size: 14px;
+    }
+
+    #wordlist ul li {
+        font-weight: bold;
+    }
+
+    #wordlist ul li.found {
+        font-weight: normal;
+        text-decoration: line-through;
+        color: #8b8;
+    }
+</style>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div>
+    <div>
+        <div id="wordsearch"></div>
+    </div>
+    <div id="wordlist"></div>
+</div>
+
+<div style="clear:both"></div>
+
+<hr>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputWords" class="col-sm-2 control-label">Words</label>
+            <div class="col-sm-10">
+                <textarea id="inputWords" cols="60" rows="15">
+donkey
+elephant
+monkey
+cheetah
+ocelot
+alligator
+crocodile
+mouse
+frog
+dingo
+echidna
+koala
+racoon
+badger
+snake
+lizard
+tiger
+gazelle
+hyena
+shark
+whale
+dolphin
+kookaburra
+aardvark
+zebra</textarea>
+            </div>
+         </div>
+          <div class="form-group">
+
+            <label class="col-sm-2 control-label">Word Directions</label>
+            <div class="col-sm-2">
+
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" checked="checked" id="dir-down"> <i class="fa fa-2x fa-long-arrow-down"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" checked="checked" id="dir-right"> <i class="fa fa-2x fa-long-arrow-right"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" checked="checked" id="dir-diag-up"> <i class="fa fa-2x fa-long-arrow-up rotate45"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" checked="checked" id="dir-diag-down"> <i class="fa fa-2x fa-long-arrow-up rotate135"></i>
+                </label>
+              </div>
+
+            </div>
+
+            <div class="col-sm-2">
+
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" id="dir-up"> <i class="fa fa-2x fa-long-arrow-up"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" id="dir-left"> <i class="fa fa-2x fa-long-arrow-left"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" id="dir-rdiag-down"> <i class="fa fa-2x fa-long-arrow-down rotate45"></i>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="arrow-label">
+                  <input type="checkbox" name="directions" id="dir-rdiag-up"> <i class="fa fa-2x fa-long-arrow-down rotate135"></i>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" id="generate" class="btn btn-default">Generate</button>
+            </div>
+          </div>
+    </form>
+
+
+    <script type="text/javascript" src="wordsearch.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('#generate').on('click', function() {
+            var directionsLookup = {
+                'dir-down': {
+                    x: 0,
+                    y: 1
+                },
+                'dir-right': {
+                    x: 1,
+                    y: 0
+                },
+                'dir-diag-up': {
+                    x: 1,
+                    y: 1
+                },
+                'dir-diag-down': {
+                    x: 1,
+                    y: -1
+                },
+                'dir-up': {
+                    x: 0,
+                    y: -1
+                },
+                'dir-left': {
+                    x: -1,
+                    y: 0
+                },
+                'dir-rdiag-down': {
+                    x: -1,
+                    y: 1
+                },
+                'dir-rdiag-up': {
+                    x: -1,
+                    y: -1
+                },
+            };
+
+            var directions = [];
+
+            $('input[name="directions"]').each(function(i, elt) {
+                if ($(elt).is(':checked')) {
+                    directions.push(directionsLookup[$(elt).attr('id')]);
+                }
+            });
+
+            var words = $('#inputWords').val().replace(/\,/g, ' ').split(/\s+/g);
+
+            buildBoard(words, function(board, usedWords, leftOvers) {
+                if (leftOvers.length > 0 ) {
+                    alert('Could not fit in: ' + leftOvers.join(', '));
+                }
+                
+                drawBoard(board, $('#wordsearch'), function(foundWord) {
+                    $('#wordlist ul').find('li').each(function(i, elt) {
+                        if ($(elt).text() === foundWord) {
+                            $(elt).fadeOut(function() {
+                                $(this).addClass('found').fadeIn();
+                            });
+                        }
+                    });
+                });
+
+                $list = $('<ul>');
+                $.each(usedWords, function(i, word) {
+                    $list.append($('<li>').text(word));
+                });
+
+                $('#wordlist').empty().append($list);
+            }, directions);
+        });
+    });
+    </script>
+</body>
+</html>
